@@ -35,7 +35,3 @@ pgdata/
 # NuGet packages
 *.nupkg
 packages/
-
-# Entity Framework migrations
-Migrations/
-
