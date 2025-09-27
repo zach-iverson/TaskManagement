@@ -13,7 +13,7 @@ public class TaskManagementContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        modelBuilder.Entity<Models.HumanTask>().ToTable("HumanTasks").HasKey(t => t.Id);
+        modelBuilder.Entity<Models.HumanTask>().ToTable("humantasks", "sandbox").HasKey(t => t.Id);
     }
     
 }

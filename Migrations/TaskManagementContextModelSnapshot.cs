@@ -46,7 +46,7 @@ namespace TaskManagementApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("HumanTasks", (string)null);
+                    b.ToTable("humantasks", "sandbox");
                 });
 #pragma warning restore 612, 618
         }

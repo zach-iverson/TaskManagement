@@ -12,7 +12,7 @@ using TaskManagementApi.Database;
 namespace TaskManagementApi.Migrations
 {
     [DbContext(typeof(TaskManagementContext))]
-    [Migration("20250927220456_InitialCreate")]
+    [Migration("20250927222320_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -49,7 +49,7 @@ namespace TaskManagementApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("HumanTasks", (string)null);
+                    b.ToTable("humantasks", "sandbox");
                 });
 #pragma warning restore 612, 618
         }

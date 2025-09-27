@@ -12,8 +12,12 @@ namespace TaskManagementApi.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.EnsureSchema(
+                name: "sandbox");
+
             migrationBuilder.CreateTable(
-                name: "HumanTasks",
+                name: "humantasks",
+                schema: "sandbox",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -25,7 +29,7 @@ namespace TaskManagementApi.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_HumanTasks", x => x.Id);
+                    table.PrimaryKey("PK_humantasks", x => x.Id);
                 });
         }
 
@@ -33,7 +37,8 @@ namespace TaskManagementApi.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "HumanTasks");
+                name: "humantasks",
+                schema: "sandbox");
         }
     }
 }
