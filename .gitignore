@@ -1,0 +1,41 @@
+# .NET build outputs
+bin/
+obj/
+
+# Rider project files
+.idea/
+*.sln.iml
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# VS Code settings
+.vscode/
+
+# macOS system files
+.DS_Store
+
+# Docker volumes and containers
+docker-compose.override.yml
+pgdata/
+
+# Logs
+*.log
+
+# Database files
+*.mdf
+*.ldf
+
+# Other
+*.db
+
+# NuGet packages
+*.nupkg
+packages/
+
+# Entity Framework migrations
+Migrations/
+
