@@ -1,6 +1,7 @@
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using TaskManagementApi.Database;
+using TaskManagementApi.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,11 +16,10 @@ builder.Services.AddSwaggerGen(options =>
     options.SwaggerDoc("v1", new() { Title = "TaskManagement API", Version = "v1" });
 });
 
-builder.Services.AddDbContext<TaskManagementApi.Database.TaskManagementContext>(options =>
+builder.Services.AddDbContext<TaskManagementContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services
-    .AddScoped<TaskManagementApi.Database.IHumanTaskRepository, TaskManagementApi.Database.HumanTaskRepository>();
+builder.Services.AddScoped<IHumanTaskRepository, HumanTaskRepository>();
 
 builder.Services.AddLogging();
 
@@ -43,7 +43,7 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Enforce HTTPS (will redirect http:// to https://)
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseHttpsRedirection();
 
 // Swagger (leave enabled always for now)

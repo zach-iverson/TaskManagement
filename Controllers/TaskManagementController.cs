@@ -89,8 +89,9 @@ public class TaskManagementController : Controller
             _logger.LogError("Failed to update task {TaskId}", id);
             return Problem("An error occurred while updating the task.", statusCode: 500);
         }
-
-        return Ok(updated);
+        
+        var humanTaskDto = HumanTaskDto.FromEntity(updated);
+        return Ok(humanTaskDto);
     }
 
     // PATCH: v1/TaskManagement/{id}/complete
@@ -108,7 +109,9 @@ public class TaskManagementController : Controller
         {
             return Problem("Failed to mark task complete.", statusCode: 500);
         }
-        return Ok(updated);
+        
+        var humanTaskDto = HumanTaskDto.FromEntity(updated);
+        return Ok(humanTaskDto);
     }
 
     // DELETE: v1/TaskManagement/{id}
