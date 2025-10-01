@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TaskManagementApi.Database;
+using TaskManagementApi.Database.Security;
 using TaskManagementApi.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +20,8 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.AddDbContext<TaskManagementContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddIdentity<AppUser, IdentityRole>()
+    .AddEntityFrameworkStores<TaskManagementContext>();
 
 builder.Services.AddScoped<IHumanTaskRepository, HumanTaskRepository>();
 

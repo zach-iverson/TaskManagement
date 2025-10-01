@@ -28,6 +28,19 @@ public class HumanTaskRepository : IHumanTaskRepository
         }
     }
 
+    public Task<List<HumanTask>> GetAllIncompleteTasksAsync()
+    {
+        try
+        {
+            return _context.HumanTasks.Where(t => !t.IsComplete).ToListAsync();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
     public async Task<HumanTask?> GetTaskByIdAsync(int id)
     {
         try

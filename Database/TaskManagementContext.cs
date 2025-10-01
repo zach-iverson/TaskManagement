@@ -1,13 +1,12 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using TaskManagementApi.Database.Security;
 
 namespace TaskManagementApi.Database;
 
-public class TaskManagementContext : DbContext
+public class TaskManagementContext(DbContextOptions<TaskManagementContext> options)
+    : IdentityDbContext<AppUser>(options)
 {
-    public TaskManagementContext(DbContextOptions<TaskManagementContext> options) : base(options)
-    {
-    }
-
     public DbSet<Models.HumanTask> HumanTasks { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

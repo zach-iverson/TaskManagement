@@ -25,6 +25,14 @@ public class TaskManagementController : Controller
         var results = await _taskRepository.GetAllTasksAsync();
         return Ok(results);
     }
+    
+    // GET: v1/TaskManagement/incomplete
+    [HttpGet("incomplete")]
+    public async Task<IActionResult> GetAllIncompleteTasks(CancellationToken cancellationToken)
+    {
+        var results = await _taskRepository.GetAllIncompleteTasksAsync();
+        return Ok(results);
+    }
 
     // GET: v1/TaskManagement/{id}
     [HttpGet("{id:int}")]
