@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskManagementApi.Database;
 using TaskManagementApi.Models;
@@ -7,6 +8,7 @@ namespace TaskManagementApi.Controllers;
 [ApiController]
 [Route("v{apiVersion:apiVersion}/[controller]")]
 [ApiVersion("1")]
+[Authorize]
 public class TaskManagementController : Controller
 {
     private readonly IHumanTaskRepository _taskRepository;
