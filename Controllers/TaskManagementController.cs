@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskManagementApi.Database;
+using TaskManagementApi.DTOs;
 using TaskManagementApi.Models;
 
 namespace TaskManagementApi.Controllers;
@@ -22,10 +23,21 @@ public class TaskManagementController : Controller
 
     // GET: v1/TaskManagement
     [HttpGet]
-    public async Task<IActionResult> GetAllTasks(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAllTasks(CancellationToken cancellationToken,
+        [FromQuery] int pageSize = 10,
+        [FromQuery] string? search = null,
+        [FromQuery] bool? isComplete = null, [FromQuery] int pageNumber = 1)
     {
-        var results = await _taskRepository.GetAllTasksAsync();
-        return Ok(results);
+        var pagedResult = await _taskRepository.GetTasksAsync(pageNumber, pageSize, search, isComplete);
+        var dtoResults = pagedResult.Items.Select(HumanTaskDto.FromEntity).ToList();
+        var response = new PagedResult<HumanTaskDto>
+        {
+            Items = dtoResults,
+            TotalCount = pagedResult.TotalCount,
+            PageNumber = pagedResult.PageNumber,
+            PageSize = pagedResult.PageSize
+        };
+        return Ok(response);
     }
     
     // GET: v1/TaskManagement/incomplete
@@ -33,7 +45,9 @@ public class TaskManagementController : Controller
     public async Task<IActionResult> GetAllIncompleteTasks(CancellationToken cancellationToken)
     {
         var results = await _taskRepository.GetAllIncompleteTasksAsync();
-        return Ok(results);
+        // convert to dto 
+        var dtoResults = results.Select(HumanTaskDto.FromEntity).ToList();
+        return Ok(dtoResults);
     }
 
     // GET: v1/TaskManagement/{id}
@@ -47,7 +61,9 @@ public class TaskManagementController : Controller
             _logger.LogInformation("Task {TaskId} not found", id);
             return NotFound();
         }
-        return Ok(task);
+
+        var dto = HumanTaskDto.FromEntity(task);
+        return Ok(dto);
     }
 
     // POST: v1/TaskManagement

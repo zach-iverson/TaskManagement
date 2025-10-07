@@ -52,14 +52,35 @@ The TaskManagement API is a RESTful service for managing human tasks. It provide
 ### Endpoints
 
 #### Task Management
-| Method | Endpoint                  | Description                     |
-|--------|---------------------------|---------------------------------|
-| GET    | `/v1/TaskManagement`      | Retrieve all tasks.             |
-| GET    | `/v1/TaskManagement/{id}` | Retrieve a task by ID.          |
-| POST   | `/v1/TaskManagement`      | Create a new task.              |
-| PUT    | `/v1/TaskManagement/{id}` | Update an existing task.        |
-| PATCH  | `/v1/TaskManagement/{id}/complete` | Mark a task as complete. |
-| DELETE | `/v1/TaskManagement/{id}` | Delete a task.                  |
+| Method | Endpoint                  | Description                     | Query Parameters |
+|--------|---------------------------|---------------------------------|------------------|
+| GET    | `/v1/TaskManagement`      | Retrieve paginated and filtered tasks. | `pageNumber`, `pageSize`, `search`, `isComplete` |
+| GET    | `/v1/TaskManagement/{id}` | Retrieve a task by ID.          |                  |
+| POST   | `/v1/TaskManagement`      | Create a new task.              |                  |
+| PUT    | `/v1/TaskManagement/{id}` | Update an existing task.        |                  |
+| PATCH  | `/v1/TaskManagement/{id}/complete` | Mark a task as complete. |                  |
+| DELETE | `/v1/TaskManagement/{id}` | Delete a task.                  |                  |
+
+**Pagination and Filtering**
+- `pageNumber` (int, default: 1): The page number to retrieve.
+- `pageSize` (int, default: 10): The number of tasks per page.
+- `search` (string, optional): Filter tasks by title or description containing this text.
+- `isComplete` (bool, optional): Filter tasks by completion status.
+
+**Example Request:**
+```
+GET /v1/TaskManagement?pageNumber=2&pageSize=5&search=meeting&isComplete=false
+```
+
+**Response:**
+```
+{
+  "items": [ ... ],
+  "totalCount": 42,
+  "pageNumber": 2,
+  "pageSize": 5
+}
+```
 
 #### Health Check
 | Method | Endpoint   | Description          |
@@ -123,10 +144,26 @@ Update the `appsettings.json` file to configure the database connection string:
 
 ---
 
-## Notes
-- Ensure the PostgreSQL database is running before starting the API.
-- Use the Swagger UI to explore and test the API endpoints interactively.
-- For production, update the CORS policy to restrict allowed origins.
+## Key Learnings & Achievements
+
+- **Architecture & Design Principles (C# / OO)**
+  - Mastered Dependency Injection (DI): Registered services (Scoped, Singleton) and injected dependencies (DbContext, repositories) for decoupled, testable code.
+  - Implemented the Repository Pattern: Separated concerns into Controllers (HTTP), Repositories (data access), and Entities/DTOs (data structure).
+
+- **Entity Framework Core (EF Core) Deep Dive**
+  - Learned DbContext, DbSet, and CLI migrations to manage database schema from C# code.
+  - Modeled relationships: Managed one-to-many relationships (AppUser → Task, Category → Task) with foreign keys for data integrity.
+  - Modeled Value Objects: Used Owned Entities (e.g., AuditInfo) for clean domain modeling.
+  - Optimized Performance: Used .Select() projection to fetch only needed columns, improving query efficiency.
+  - Enforced Data Integrity: Applied Global Query Filters for soft deletes, ensuring business rules are enforced automatically.
+
+- **Security and ASP.NET Core Pipeline**
+  - Integrated Authentication & JWT: Used ASP.NET Core Identity and JWTs for stateless authentication.
+  - Implemented Authorization: Used [Authorize] for class-level and object-level security, restricting access to user-owned tasks.
+  - Understood Middleware: Ordered UseAuthentication, UseAuthorization, and custom error handling for safe, consistent request processing.
+
+---
+
 
 ---
 
